@@ -1,0 +1,1093 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧬 Bioquímica · Joe · Prof. Jorge Ñañez</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:     #0a0f1a;
+  --deep:    #0d1b2a;
+  --card:    #111d2e;
+  --surface: #162438;
+  --lift:    #1c2e44;
+  --cyan:    #00d4ff;
+  --teal:    #00a8cc;
+  --aqua:    #4ae3c8;
+  --gold:    #ffd166;
+  --rose:    #ff6b6b;
+  --green:   #06d6a0;
+  --text:    #d6eeff;
+  --muted:   #7baec8;
+  --dim:     #3a5a78;
+  --r1: 20px; --r2: 14px; --r3: 8px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+
+body {
+  font-family:'Figtree',sans-serif;
+  background:var(--ink);
+  color:var(--text);
+  min-height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ─── CANVAS BG ─── */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* ─── LAYOUT ─── */
+.shell{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;
+  height:100vh;overflow:hidden;
+}
+
+/* ─── TOPBAR ─── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;
+  background:rgba(13,27,42,0.92);
+  border-bottom:1px solid rgba(0,212,255,0.15);
+  flex-shrink:0;
+  backdrop-filter:blur(12px);
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,var(--cyan),var(--aqua));
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;
+  box-shadow:0 0 20px rgba(0,212,255,0.4);
+}
+.brand-name{
+  font-family:'Syne',sans-serif;
+  font-weight:800;font-size:1.1rem;
+  background:linear-gradient(135deg,#fff,var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.brand-sub{font-size:.72rem;color:var(--muted);margin-top:-2px}
+.tutor-pill{
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface);
+  border:1px solid rgba(0,212,255,0.2);
+  border-radius:50px;padding:6px 14px 6px 8px;
+  font-size:.82rem;font-weight:600;
+}
+.dot-live{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--green);
+  box-shadow:0 0 8px var(--green);
+  animation:blink 2s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ─── MENU TABS ─── */
+.tab-bar{
+  display:flex;gap:4px;flex-wrap:wrap;
+  padding:8px 16px;
+  background:rgba(11,18,28,0.8);
+  border-bottom:1px solid rgba(0,212,255,0.1);
+  flex-shrink:0;
+}
+.tab-btn{
+  padding:5px 12px;border-radius:50px;
+  border:1px solid var(--dim);
+  background:transparent;
+  color:var(--muted);font-family:'Figtree',sans-serif;
+  font-size:.78rem;font-weight:500;
+  cursor:pointer;transition:.2s;white-space:nowrap;
+}
+.tab-btn:hover{border-color:var(--teal);color:var(--text);background:var(--lift)}
+.tab-btn.active{
+  background:linear-gradient(135deg,var(--teal),rgba(0,168,204,0.3));
+  border-color:var(--cyan);color:#fff;
+  box-shadow:0 0 12px rgba(0,212,255,0.25);
+}
+
+/* ─── MAIN ─── */
+.main{
+  display:flex;flex:1;overflow:hidden;
+  padding:12px;gap:12px;
+}
+
+/* ─── TUTOR PANEL ─── */
+.tutor-col{
+  width:200px;flex-shrink:0;
+  display:flex;flex-direction:column;gap:10px;
+}
+.avatar-wrap{
+  background:var(--card);
+  border:1px solid rgba(0,212,255,0.2);
+  border-radius:var(--r1);
+  padding:16px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.avatar-3d{
+  width:100px;height:100px;
+  background:radial-gradient(circle at 35% 35%,#1e4060,#0a1a28);
+  border-radius:50%;
+  border:3px solid var(--cyan);
+  display:flex;align-items:center;justify-content:center;
+  font-size:48px;
+  box-shadow:0 0 30px rgba(0,212,255,0.3),inset 0 0 20px rgba(0,0,0,0.5);
+  position:relative;
+  animation:float 4s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.avatar-ring{
+  position:absolute;inset:-6px;
+  border-radius:50%;
+  border:2px dashed rgba(0,212,255,0.3);
+  animation:spin 12s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.avatar-name{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:.85rem;letter-spacing:.1em;
+  color:var(--cyan);text-align:center;
+}
+.avatar-title{font-size:.68rem;color:var(--muted);text-align:center}
+
+.bubble{
+  background:var(--surface);
+  border:1px solid rgba(0,212,255,0.15);
+  border-radius:14px 14px 14px 4px;
+  padding:11px 13px;
+  font-size:.8rem;line-height:1.55;
+  color:var(--text);min-height:60px;
+  transition:.3s;
+}
+
+.btn-grid{display:flex;flex-direction:column;gap:6px}
+.act-btn{
+  display:flex;align-items:center;gap:7px;
+  padding:9px 12px;border-radius:50px;
+  border:1px solid var(--dim);
+  background:var(--card);
+  color:var(--muted);font-family:'Figtree',sans-serif;
+  font-size:.8rem;font-weight:500;
+  cursor:pointer;transition:.2s;
+  width:100%;
+}
+.act-btn:hover{border-color:var(--teal);color:var(--text);background:var(--lift);transform:translateX(2px)}
+.act-btn.stop{border-color:rgba(255,107,107,0.4);color:#ff8888}
+.act-btn.stop:hover{background:rgba(255,107,107,0.1)}
+.act-btn .icon{font-size:1rem}
+
+/* ─── CONTENT ─── */
+.content-col{
+  flex:1;
+  background:var(--card);
+  border:1px solid rgba(0,212,255,0.12);
+  border-radius:var(--r1);
+  overflow-y:auto;
+  padding:22px 26px;
+  scroll-behavior:smooth;
+}
+.content-col::-webkit-scrollbar{width:5px}
+.content-col::-webkit-scrollbar-track{background:transparent}
+.content-col::-webkit-scrollbar-thumb{background:var(--dim);border-radius:10px}
+
+/* ─── WELCOME ─── */
+.welcome{
+  height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:18px;
+  text-align:center;color:var(--muted);
+}
+.welcome-dna{font-size:5rem;animation:float 3s ease-in-out infinite}
+.welcome h2{
+  font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;
+  background:linear-gradient(135deg,var(--text),var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.welcome p{font-size:.95rem;max-width:360px;line-height:1.7}
+
+/* ─── GUIDE CONTENT ─── */
+.guide-header{
+  display:flex;align-items:flex-start;gap:14px;
+  margin-bottom:20px;
+  padding-bottom:16px;
+  border-bottom:1px solid rgba(0,212,255,0.1);
+}
+.guide-icon{
+  width:50px;height:50px;border-radius:14px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:24px;
+  background:linear-gradient(135deg,var(--surface),var(--lift));
+  border:1px solid rgba(0,212,255,0.2);
+}
+.guide-title{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1.6rem;
+  background:linear-gradient(135deg,#fff,var(--cyan));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1.2;
+}
+.guide-sub{font-size:.82rem;color:var(--muted);margin-top:4px}
+
+/* ─── CONTENT CARDS ─── */
+.content-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.c-card{
+  background:var(--surface);
+  border:1px solid var(--dim);
+  border-left:4px solid var(--teal);
+  border-radius:0 var(--r2) var(--r2) 0;
+  padding:13px 16px;
+  font-size:.9rem;line-height:1.7;
+  cursor:pointer;
+  transition:.2s;position:relative;overflow:hidden;
+}
+.c-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(0,212,255,0.03),transparent);
+  opacity:0;transition:.2s;
+}
+.c-card:hover{border-left-color:var(--cyan);transform:translateX(3px)}
+.c-card:hover::before{opacity:1}
+.c-card.highlight{border-left-color:var(--gold);background:rgba(255,209,102,0.05)}
+.c-card b,.c-card strong{color:var(--cyan)}
+.speak-icon{
+  position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-size:.85rem;opacity:0;transition:.2s;color:var(--teal);
+}
+.c-card:hover .speak-icon{opacity:1}
+
+/* ─── SECTION HEADER ─── */
+.sec-head{
+  font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;
+  color:var(--cyan);margin:20px 0 10px;
+  display:flex;align-items:center;gap:8px;
+}
+.sec-head::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(0,212,255,0.3),transparent);
+}
+
+/* ─── AI EXPAND ─── */
+.ai-box{
+  background:linear-gradient(135deg,rgba(0,168,204,0.08),rgba(74,227,200,0.05));
+  border:1px solid rgba(0,212,255,0.2);
+  border-radius:var(--r2);padding:16px 18px;
+  margin:16px 0;font-size:.88rem;line-height:1.7;
+}
+.ai-box-title{
+  font-weight:700;color:var(--aqua);font-size:.78rem;
+  letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px;
+}
+.loading-row{display:flex;gap:5px;align-items:center;padding:8px 0}
+.ld{width:8px;height:8px;border-radius:50%;background:var(--cyan);animation:ld .9s infinite ease-in-out}
+.ld:nth-child(2){animation-delay:.15s}.ld:nth-child(3){animation-delay:.3s}
+@keyframes ld{0%,80%,100%{transform:scale(.4);opacity:.4}40%{transform:scale(1);opacity:1}}
+
+/* ─── QUIZ ─── */
+.quiz-section{
+  margin-top:30px;
+  border-top:2px solid rgba(0,212,255,0.15);
+  padding-top:24px;
+}
+.quiz-title{
+  font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;
+  background:linear-gradient(135deg,var(--gold),#ff9f43);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  margin-bottom:18px;
+}
+.q-card{
+  background:var(--surface);
+  border:1px solid var(--dim);
+  border-radius:var(--r1);
+  padding:18px 20px;
+  margin-bottom:14px;
+}
+.q-num{
+  font-family:'Syne',sans-serif;font-size:.72rem;font-weight:700;
+  color:var(--teal);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;
+}
+.q-text{font-weight:600;font-size:.95rem;line-height:1.5;margin-bottom:14px}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{
+  padding:10px 16px;border-radius:50px;
+  border:1px solid var(--dim);
+  background:var(--card);
+  color:var(--muted);font-size:.88rem;
+  cursor:pointer;transition:.15s;text-align:left;
+  font-family:'Figtree',sans-serif;
+}
+.opt:hover:not(.correct):not(.wrong){background:var(--lift);border-color:var(--teal);color:var(--text)}
+.opt.correct{background:rgba(6,214,160,0.15);border-color:var(--green);color:#aafce8}
+.opt.wrong{background:rgba(255,107,107,0.12);border-color:var(--rose);color:#ffaaaa}
+.feedback{
+  margin-top:10px;padding:10px 14px;border-radius:var(--r3);
+  font-size:.83rem;line-height:1.5;
+  background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.15);
+  color:var(--text);
+}
+.score-box{
+  margin-top:24px;padding:22px;border-radius:var(--r1);text-align:center;
+  background:linear-gradient(135deg,rgba(6,214,160,0.1),rgba(0,212,255,0.06));
+  border:2px solid rgba(6,214,160,0.3);
+}
+.score-big{
+  font-family:'Syne',sans-serif;font-size:3.5rem;font-weight:800;
+  background:linear-gradient(135deg,var(--aqua),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.score-label{color:var(--muted);margin-top:6px;font-size:.9rem}
+.retry-btn{
+  margin-top:14px;padding:10px 28px;border-radius:50px;
+  background:linear-gradient(135deg,var(--teal),var(--cyan));
+  border:none;color:#000;font-weight:700;font-size:.88rem;
+  cursor:pointer;font-family:'Figtree',sans-serif;
+  box-shadow:0 0 20px rgba(0,212,255,0.3);transition:.2s;
+}
+.retry-btn:hover{transform:scale(1.04)}
+
+/* ─── KEY FACTS BADGE ─── */
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0}
+.badge{
+  padding:4px 12px;border-radius:50px;
+  font-size:.73rem;font-weight:600;letter-spacing:.03em;
+  border:1px solid;
+}
+.badge.cyan{background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.4);color:var(--cyan)}
+.badge.gold{background:rgba(255,209,102,.1);border-color:rgba(255,209,102,.4);color:var(--gold)}
+.badge.rose{background:rgba(255,107,107,.1);border-color:rgba(255,107,107,.4);color:var(--rose)}
+.badge.green{background:rgba(6,214,160,.1);border-color:rgba(6,214,160,.4);color:var(--green)}
+
+/* ─── TABLE ─── */
+.bio-table{width:100%;border-collapse:collapse;font-size:.82rem;margin:12px 0}
+.bio-table th{
+  background:var(--lift);color:var(--cyan);font-weight:700;
+  padding:9px 12px;text-align:left;font-size:.75rem;letter-spacing:.05em;
+}
+.bio-table td{padding:8px 12px;border-bottom:1px solid rgba(0,212,255,0.07)}
+.bio-table tr:hover td{background:rgba(0,212,255,0.04)}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="shell">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🧬</div>
+    <div>
+      <div class="brand-name">BIOQUÍMICA · ODONTOLOGÍA</div>
+      <div class="brand-sub">Primer año · Universidad Central de Venezuela</div>
+    </div>
+  </div>
+  <div class="tutor-pill">
+    <div class="dot-live"></div>
+    Prof. Jorge Ñañez
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar" id="tabBar"></div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TUTOR -->
+  <div class="tutor-col">
+    <div class="avatar-wrap">
+      <div class="avatar-3d">
+        🧑‍🏫
+        <div class="avatar-ring"></div>
+      </div>
+      <div>
+        <div class="avatar-name">DR. JORGE</div>
+        <div class="avatar-title">Bioquímica · Odonto</div>
+      </div>
+      <div class="bubble" id="bubble">👋 ¡Hola Joe! Selecciona un tema para comenzar.</div>
+    </div>
+
+    <div class="btn-grid">
+      <button class="act-btn" id="btnAmpliar"><span class="icon">🔭</span> Ampliar con IA</button>
+      <button class="act-btn" id="btnLeer"><span class="icon">🔊</span> Leer sección</button>
+      <button class="act-btn stop" id="btnDetener"><span class="icon">⏹</span> Detener voz</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content-col" id="contentCol">
+    <div class="welcome" id="welcomeScreen">
+      <div class="welcome-dna">🧬</div>
+      <h2>Bienvenida, Joe 🦷</h2>
+      <p>Elige una guía temática arriba para estudiar con el Prof. Ñañez. Cada módulo incluye contenido completo + evaluación interactiva.</p>
+    </div>
+    <div id="mainContent" style="display:none"></div>
+  </div>
+</div>
+
+</div>
+
+<script>
+/* ════════════════════════════════
+   ANIMATED BACKGROUND
+════════════════════════════════ */
+(function(){
+  const c=document.getElementById('bg-canvas');
+  const ctx=c.getContext('2d');
+  let W,H,pts=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;init()}
+  function init(){
+    pts=[];
+    for(let i=0;i<60;i++) pts.push({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,
+      r:Math.random()*2+1
+    });
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // grid
+    ctx.strokeStyle='rgba(0,212,255,0.03)';ctx.lineWidth=1;
+    for(let x=0;x<W;x+=60){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke()}
+    for(let y=0;y<H;y+=60){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke()}
+    // particles
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(0,212,255,0.25)';ctx.fill();
+    });
+    // connections
+    pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{
+      const d=Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<120){
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);
+        ctx.strokeStyle=`rgba(0,212,255,${.08*(1-d/120)})`;
+        ctx.lineWidth=.5;ctx.stroke();
+      }
+    }));
+    requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize);
+  resize();draw();
+})();
+
+/* ════════════════════════════════
+   DATA — 7 GUÍAS COMPLETAS
+════════════════════════════════ */
+const GUIAS = [
+  /* ── 0. AGUA, SALIVA Y BUFFER ── */
+  {
+    id:'agua', icon:'💧',
+    titulo:'Agua, Saliva y Buffer',
+    sub:'Propiedades del agua · Sistemas amortiguadores · Composición salival',
+    badges:[
+      {t:'pH sangre: 7.35–7.45',c:'cyan'},{t:'pKa bicarbonato: 6.1',c:'gold'},
+      {t:'pKa fosfato: 7.2',c:'green'},{t:'Flujo estimulado: 1–2 ml/min',c:'rose'}
+    ],
+    secciones:[
+      {titulo:'Propiedades físicas del agua', items:[
+        '💧 <b>Alto calor específico:</b> el agua absorbe mucho calor sin cambiar drásticamente su temperatura, fundamental para la homeostasis térmica.',
+        '🌡️ <b>Punto de fusión 0°C / ebullición 100°C:</b> resultado de los puentes de hidrógeno que unen las moléculas y requieren mucha energía para romperse.',
+        '🔗 <b>Puentes de hidrógeno:</b> uniones entre átomos electronegativos (O, N). Estabilizan estructuras moleculares y definen la solubilidad de los compuestos.',
+        '🫧 <b>Tensión superficial:</b> la alta tensión superficial del agua permite fenómenos biológicos como la formación de membranas. Relacionada con los puentes H.',
+        '⚡ <b>Constante dieléctrica alta:</b> el agua separa fácilmente cargas opuestas → excelente solvente polar para sales, ácidos y bases.',
+        '💎 <b>Presión osmótica:</b> diferencia de concentración de solutos entre dos compartimentos separados por membrana semipermeable. Regula volumen celular.',
+        '🔬 <b>Polihidroxilados → solubles:</b> los carbohidratos tienen muchos OH que forman puentes H con el agua → alta solubilidad.',
+      ]},
+      {titulo:'Mucina y saliva', items:[
+        '🦷 <b>Mucina:</b> glicoproteína que da viscosidad a la saliva. Protege las caras oclusales de los dientes. Sin mucina → desgaste dental acelerado.',
+        '📊 <b>Composición salival:</b> electrolitos (Ca²⁺, PO₄³⁻, Na⁺, K⁺, Cl⁻), mucina, α-amilasa, IgA secretora, lisozima, lactoferrina.',
+        '⏱️ <b>Tasa de flujo salival:</b> No estimulada → 0.3–0.4 ml/min | Estimulada → 1–2 ml/min. Se reduce a cero con pérdida del 8% del agua corporal.',
+        '🌙 <b>Factores que afectan el flujo:</b> ciclo circadiano (disminuye en la noche), postura, hidratación, fármacos, sexo femenino, iluminación.',
+        '😮 <b>Xerostomía:</b> sensación subjetiva de boca seca por hiposalivación. Aumenta riesgo de caries y dificulta la deglución.',
+      ]},
+      {titulo:'Ácidos, bases y equilibrio', items:[
+        '⚗️ <b>Ácido fuerte:</b> se disocia completamente. HCl → H⁺ + Cl⁻. Ka > 1, pKa bajo. Ej: HCl, H₂SO₄, NaOH (base fuerte).',
+        '🧪 <b>Ácido débil:</b> disociación parcial. CH₃COOH ⇌ H⁺ + CH₃COO⁻. Ka < 1, pKa alto. Ej: ácido acético, ácido carbónico.',
+        '📐 <b>Ecuación Henderson-Hasselbalch:</b> pH = pKa + log([base]/[ácido]). Máxima capacidad amortiguadora cuando pH = pKa (concentraciones iguales).',
+        '🩸 <b>Valores normales:</b> Sangre arterial 7.35–7.45 | Líquidos intracelulares 6.9–7.4 | Saliva 6.7–7.5 (variable según estimulación e ingesta).',
+      ]},
+      {titulo:'Sistemas buffer en saliva', items:[
+        '🔵 <b>Buffer bicarbonato (saliva estimulada):</b> pKa = 6.1. [HCO₃⁻] varía de 1 mM (reposo) hasta 60 mM (flujo máximo). Principal amortiguador en alta tasa de flujo.',
+        '🟢 <b>Buffer fosfato (saliva NO estimulada):</b> pKa₂ = 7.2 (H₂PO₄⁻ / HPO₄²⁻). Más efectivo cerca del pH fisiológico. [Pi] = 5–6 mM en reposo vs 3 mM estimulada.',
+        '⚖️ <b>Buffer proteínas / hemoglobina:</b> grupos imidazólicos de la histidina ceden/captan H⁺. La hemoglobina amortigua cambios de pH en sangre.',
+        '💡 <b>Capacidad amortiguadora:</b> mmol de HCl o NaOH necesarios para variar el pH en 1 unidad por litro de saliva. Ejemplo: 80.4 mmol/L·UpH.',
+        '🧮 <b>Cálculo típico de pH:</b> Si [HCO₃⁻]=12mM y [H₂CO₃]=1.2mM → pH = 6.1 + log(10) = 7.1',
+        '🔬 <b>Trastornos ácido-base:</b> Acidemia (pH < 7.35) / Alcalemia (pH > 7.45). Compensación respiratoria (rápida, horas) y renal/metabólica (lenta, días).',
+        '❤️ <b>Sistema bicarbonato en sangre:</b> CO₂ entra al glóbulo rojo → anhidrasa carbónica → H₂CO₃ → HCO₃⁻ + H⁺. El H⁺ se une a hemoglobina (efecto Bohr).',
+      ]}
+    ],
+    preguntas:[
+      {p:'¿Cuál es el principal amortiguador de la saliva ESTIMULADA?',ops:['Fosfato','Proteínas','Bicarbonato','Cloruro'],corr:2,exp:'La saliva estimulada tiene mayor flujo y eleva la concentración de HCO₃⁻, convirtiéndolo en el buffer dominante. En reposo predomina el fosfato.'},
+      {p:'El pKa del sistema bicarbonato/ácido carbónico es:',ops:['7.2','6.1','2.1','4.7'],corr:1,exp:'pKa = 6.1 para H₂CO₃/HCO₃⁻. El sistema fosfato tiene pKa₂ = 7.2.'},
+      {p:'Si [HCO₃⁻]=12mM y [H₂CO₃]=1.2mM, el pH es:',ops:['6.1','6.5','7.1','7.4'],corr:2,exp:'pH = 6.1 + log(12/1.2) = 6.1 + log(10) = 6.1 + 1 = 7.1'},
+      {p:'La mucina es una:',ops:['Proteína estructural','Glicoproteína','Lípido anfipático','Enzima digestiva'],corr:1,exp:'Mucina = glicoproteína con alto contenido en carbohidratos, responsable de la viscosidad y lubricación salival.'},
+      {p:'Tasa de flujo salival ESTIMULADO normal:',ops:['0.3 ml/min','0.8 ml/min','1–2 ml/min','>3 ml/min'],corr:2,exp:'Estimulada: 1–2 ml/min. No estimulada: 0.3–0.4 ml/min. Se mide dando al paciente material para masticar.'},
+      {p:'¿Por qué el agua tiene alto punto de ebullición?',ops:['Por su masa molecular baja','Por los puentes de hidrógeno','Por su polaridad débil','Por los enlaces covalentes O-H'],corr:1,exp:'Los puentes H entre moléculas de agua requieren mucha energía para romperse, elevando el punto de ebullición a 100°C.'},
+      {p:'¿Cuándo tiene máxima capacidad amortiguadora un buffer?',ops:['Cuando pH >> pKa','Cuando [ácido] >> [base]','Cuando pH = pKa','Cuando hay exceso de base'],corr:2,exp:'Cuando pH = pKa, el log([base]/[ácido]) = 0, las concentraciones de ácido y base conjugada son iguales → máxima capacidad.'},
+      {p:'La xerostomía se define como:',ops:['Producción excesiva de saliva','Disminución o ausencia de saliva','Inflamación de la glándula parótida','pH salival <5'],corr:1,exp:'Xerostomía = sensación subjetiva de boca seca por hiposalivación. Aumenta el riesgo cariogénico.'},
+    ]
+  },
+
+  /* ── 1. CARBOHIDRATOS ── */
+  {
+    id:'carbo', icon:'🍞',
+    titulo:'Carbohidratos',
+    sub:'Estructura · Clasificación · Metabolismo · Glucólisis · Gluconeogénesis · Glucógeno',
+    badges:[
+      {t:'(CH₂O)n',c:'cyan'},{t:'55–65% dieta',c:'gold'},
+      {t:'10 rxns glucólisis',c:'green'},{t:'Glucógeno: 24h',c:'rose'}
+    ],
+    secciones:[
+      {titulo:'Introducción y funciones', items:[
+        '🍚 <b>Definición:</b> fórmula (CH₂O)n; n>3. Aldehídos o cetonas polihidroxilados. Incluidos: cereales, harinas, frutas, legumbres. 55–65% del plato alimenticio.',
+        '⚡ <b>Función 1 - Energética:</b> fuente de consumo inmediato. El combustible metabólico principal: 4 kcal/g.',
+        '🏦 <b>Función 2 - Reserva energética:</b> glucógeno (animales: hígado y músculo) y almidón (plantas). La glucosa en exceso se almacena.',
+        '🏗️ <b>Función 3 - Estructural:</b> celulosa (pared vegetal), quitina (exoesqueleto de insectos, hongos).',
+        '🤝 <b>Función 4 - Reconocimiento celular:</b> glucocálix — antígenos de grupo sanguíneo A, B, O.',
+        '🦠 <b>Importancia odontológica:</b> las bacterias bucales utilizan carbohidratos para producir ácidos (PEC) y polisacáridos extracelulares → biopelícula dental → caries. La sacarosa es el disacárido más cariogénico.',
+      ]},
+      {titulo:'Clasificación y estructura', items:[
+        '1️⃣ <b>Monosacáridos:</b> aldosas (CHO en C1) o cetosas (C=O en C2). Triosas, Tetrosas, Pentosas, Hexosas. Fórmula lineal → Fischer. Fórmula cíclica → Haworth.',
+        '🔄 <b>Isomería D/L:</b> depende de la posición del OH en el penúltimo carbono. D (derecha) predomina en biología. Los carbohidratos L son absorbidos más rápido.',
+        '🔃 <b>Epímeros:</b> difieren en un solo C asimétrico. Ej: glucosa C4 ↔ galactosa.',
+        '⭕ <b>Anómeros α/β:</b> α (OH abajo) y β (OH arriba) en el carbono anomérico al ciclarse. Anillo furanosa (5C) o piranosa (6C). Fischer Derecha = Haworth Abajo.',
+        '🔗 <b>Disacáridos:</b> Sacarosa = α-glucosa + β-fructosa (enlace α1β2, NO reductor). Lactosa = β-galactosa + glucosa (β1→4). Maltosa = α-glucosa + α-glucosa (α1→4). PREGUNTA EXAMEN: primer sufijo "sil", segundo "osa".',
+        '🌿 <b>Polisacáridos:</b> Almidón (amilosa α1-4 lineal + amilopectina α1-4 y α1-6 ramificada). Glucógeno (más ramificado que almidón, enlaces α1-4 y α1-6). Celulosa (β1-4, no digerible). Quitina (β1-4 con aminoazúcares).',
+        '🧬 <b>Heteropolisacáridos / GAGs:</b> Ácido hialurónico (matriz extracelular periodontal, cicatrización). Condroitín sulfato (dentina, tendones, piel). Heparina (anticoagulante). Dermatán sulfato, Queratán sulfato.',
+      ]},
+      {titulo:'Digestión y absorción de carbohidratos', items:[
+        '🦷 <b>Boca:</b> α-amilasa salival rompe enlaces α1-4 del almidón → maltosa, maltotriosa, α-dextrinas. Inicio de la digestión de CHO.',
+        '🫁 <b>Estómago:</b> ácido gástrico inactiva la α-amilasa salival. NO hay digestión adicional de CHO. El bolo se convierte en quimo.',
+        '🔄 <b>Intestino delgado (duodeno):</b> α-amilasa pancreática (isoenzima de la salival) continúa la digestión. Secretina (células S) libera HCO₃⁻ y agua.',
+        '🧩 <b>Oligosacaridasas (vellosidades intestinales):</b> α-glicosidasa (α1-4), α-dextrinasa (α1-6), lactasa/β-galactosidasa (lactosa), sacarasa (sacarosa). TODAS actúan por hidrólisis. Falta de una → intolerancia.',
+        '🚪 <b>Transportadores de absorción:</b> SGLT1 (activo secundario Na⁺-dependiente → glucosa y galactosa, Km bajo). GLUT5 (fructosa, difusión facilitada). GLUT2 (basolateral → circulación portal, Km alto).',
+      ]},
+      {titulo:'Transportadores GLUT', items:[
+        '📌 <b>GLUT1:</b> eritrocitos, BHE, placenta. Captación basal, Km = 1 mM.',
+        '📌 <b>GLUT2:</b> hígado, páncreas, intestino, riñón. Km = 15–20 mM. Sensor de glucosa. Transporta también fructosa y galactosa.',
+        '📌 <b>GLUT3:</b> neuronas, placenta. Alta afinidad, Km = 1 mM.',
+        '📌 <b>GLUT4:</b> músculo esquelético/cardíaco y adipocito. Km = 5 mM. ÚNICO sensible a insulina → la insulina promueve su translocación a la membrana.',
+        '📌 <b>GLUT5:</b> intestino, testículo, riñón. Fructosa principalmente.',
+        '⚠️ <b>PREGUNTA EXAMEN:</b> inhibidor de la bomba Na⁺/K⁺-ATPasa → bloquea SGLT1 → glucosa NO entra a la célula intestinal. Glucosa normal en sangre: 70–100 mg/dL (4–5 mM).',
+      ]},
+      {titulo:'Glucólisis', items:[
+        '⚡ <b>Definición:</b> vía catabólica en citosol. Convierte glucosa (6C) en 2 piruvato (3C). 10 reacciones en total.',
+        '📊 <b>Fase 1 (inversión):</b> gasta 2 ATP → produce 2 G3P (gliceraldehído-3-fosfato).',
+        '📊 <b>Fase 2 (producción):</b> produce 4 ATP + 2 NADH + 2 piruvato. Balance neto: 2 ATP + 2 NADH.',
+        '🔒 <b>3 reacciones irreversibles (puntos de regulación):</b> (1) Hexoquinasa: glucosa → G6P. (2) Fosfofructoquinasa-1 (PFK-1): F6P → F1,6BP — regulada por F2,6BP (+), AMP (+), ATP (-), citrato (-). (3) Piruvato quinasa: PEP → piruvato.',
+        '🦠 <b>Importancia odontológica:</b> Enolasa glucolítica → inhibida por flúor (F⁻). El flúor bloquea la glucólisis bacteriana → bacteria sin ATP → muere → sin caries.',
+        '🫁 <b>Anaerobiosis (músculo, eritrocito):</b> piruvato → lactato (por lactato deshidrogenasa). Regenera NAD⁺ para seguir la glucólisis. 2 ATP por glucosa.',
+        '🌬️ <b>Aerobiosis:</b> piruvato → acetil-CoA (por complejo piruvato deshidrogenasa) → ciclo de Krebs → 30–32 ATP por glucosa (lanzadera malato-aspartato: 32; glicerol-fosfato: 30).',
+        '🔄 <b>Regulación de PFK-1:</b> la fructosa-2,6-bisfosfato es el activador alostérico más importante. La insulina activa PFK-2 → más F2,6BP → activa glucólisis.',
+      ]},
+      {titulo:'Destino del piruvato y ciclo ayuno-alimentación', items:[
+        '🔀 <b>Destinos del piruvato:</b> (1) Aerobiosis: → Acetil-CoA (piruvato deshidrogenasa). (2) Anaerobiosis: → Lactato (LDH). (3) Gluconeogénesis: → Oxalacetato (piruvato carboxilasa).',
+        '🧬 <b>Rendimiento total glucosa:</b> Glucólisis: 2 NADH + 2 ATP. Piruvato DH: 2 NADH. Ciclo Krebs: 6 NADH + 2 FADH₂ + 2 GTP. Fosforilación oxidativa → Total: 30–32 ATP.',
+        '🕐 <b>Ciclo ayuno-alimentación:</b> Post-prandial (0–4h): glucosa exógena. 4–24h: glucogenólisis. >24h: gluconeogénesis. >7 días: lipólisis + cetogénesis + degradación proteica.',
+        '🧠 <b>Órganos glucodependientes:</b> cerebro, eritrocitos, córnea, glándulas suprarrenales, testículos → SOLO usan glucosa como fuente de energía.',
+        '🏭 <b>Órganos glucoformadores:</b> hígado y riñón. Solo ellos tienen glucosa-6-fosfatasa → pueden liberar glucosa libre a la sangre.',
+      ]},
+      {titulo:'Gluconeogénesis y metabolismo del glucógeno', items:[
+        '🔁 <b>Gluconeogénesis:</b> síntesis de glucosa desde precursores no glucídicos. Precursores: Lactato (ciclo de Cori), Glicerol (de TAGs), Aminoácidos glucogénicos, Piruvato.',
+        '🔒 <b>Enzimas exclusivas de gluconeogénesis:</b> Piruvato carboxilasa (piruvato → oxalacetato, activ. por Acetil-CoA). PEP carboxiquinasa. Fructosa-1,6-bisfosfatasa. Glucosa-6-fosfatasa (solo hígado y riñón → única fuente de glucosa en ayuno).',
+        '⚖️ <b>Regulación glucólisis/gluconeogénesis:</b> lo que activa una inhibe la otra. Insulina activa glucólisis. Glucagón activa gluconeogénesis. F2,6BP activa glucólisis / inhibe gluconeogénesis.',
+        '🔵 <b>Glucogenogénesis (síntesis de glucógeno):</b> post-prandial. Glucosa → G1P → UDP-glucosa → glucógeno (glucógeno sintasa añade en α1-4). Enzima ramificante crea α1-6. Iniciada por glucogenina. Insulina activa (desfosforila) glucógeno sintasa.',
+        '🔴 <b>Glucogenólisis (degradación de glucógeno):</b> ayuno. Glucógeno fosforilasa libera glucosa-1-fosfato (enlaces α1-4). Enzima desramificante (enlaces α1-6). Glucagón activa (fosforila) fosforilasa.',
+        '⚠️ <b>Músculo vs Hígado:</b> el músculo NO tiene glucosa-6-fosfatasa → no puede liberar glucosa a la sangre. Su glucógeno es para uso local. El glucógeno hepático dura ~24 horas.',
+        '🔄 <b>Ciclo de Cori:</b> músculo (anaerobiosis) → lactato → sangre → hígado → gluconeogénesis → glucosa → sangre → músculo.',
+        '🌿 <b>Vía de las pentosas fosfato:</b> produce NADPH (para síntesis de ácidos grasos y defensa redox) y ribosa-5-fosfato (para síntesis de nucleótidos).',
+      ]}
+    ],
+    preguntas:[
+      {p:'Enzima glucolítica inhibida por el flúor:',ops:['Hexoquinasa','PFK-1','Enolasa','Piruvato quinasa'],corr:2,exp:'El flúor inhibe la enolasa (2-fosfoglicerato → PEP), bloqueando la glucólisis bacteriana. Por eso el flúor previene caries.'},
+      {p:'La sacarosa está formada por:',ops:['Glucosa + Galactosa','Glucosa + Fructosa','Galactosa + Fructosa','Glucosa + Glucosa'],corr:1,exp:'Sacarosa = α-D-glucosil-(1↔2)-β-D-fructosa. Enlace α1β2 no reductor. La más cariogénica.'},
+      {p:'GLUT4 es el único transportador sensible a:',ops:['Glucagón','Cortisol','Insulina','Adrenalina'],corr:2,exp:'La insulina promueve la translocación de vesículas con GLUT4 a la membrana plasmática en músculo y adipocito.'},
+      {p:'¿Cuál NO es enzima exclusiva de la gluconeogénesis?',ops:['Piruvato carboxilasa','PFK-1','PEP carboxiquinasa','Glucosa-6-fosfatasa'],corr:1,exp:'PFK-1 es enzima glucolítica. La gluconeogénesis usa fructosa-1,6-bisfosfatasa (enzima opuesta a PFK-1).'},
+      {p:'El glucógeno muscular NO libera glucosa a la sangre porque el músculo carece de:',ops:['Hexoquinasa','Glucógeno fosforilasa','Glucosa-6-fosfatasa','Glucógeno sintasa'],corr:2,exp:'Sin glucosa-6-fosfatasa el músculo no puede convertir G6P en glucosa libre → no exporta glucosa a la sangre.'},
+      {p:'Los polisacáridos extracelulares que más contribuyen a la biopelícula dental son:',ops:['Celulosa y quitina','Glucano y fructano','Amilosa y amilopectina','Heparina y condroitín'],corr:1,exp:'Glucano: adhesión bacteriana al esmalte. Fructano: reserva energética → degradado → ácidos → desmineralización.'},
+      {p:'El ciclo de Cori conecta el metabolismo de:',ops:['Hígado e intestino','Músculo e hígado','Riñón y músculo','Adipocito e hígado'],corr:1,exp:'El músculo produce lactato (anaerobiosis) → viaja a hígado → gluconeogénesis → glucosa → vuelve al músculo.'},
+      {p:'¿Cuántas vueltas del ciclo de beta-oxidación necesita el ácido palmítico (16C)?',ops:['6','7','8','14'],corr:1,exp:'Ácido palmítico (16C): 7 vueltas → 8 Acetil-CoA. Fórmula: n/2 – 1 vueltas donde n = número de carbonos.'},
+    ]
+  },
+
+  /* ── 2. LÍPIDOS ── */
+  {
+    id:'lipidos', icon:'🧈',
+    titulo:'Lípidos',
+    sub:'Estructura · Clasificación · Membrana · Digestión · Metabolismo · Eicosanoides',
+    badges:[
+      {t:'9 kcal/g',c:'gold'},{t:'Colesterol: modulador de fluidez',c:'cyan'},
+      {t:'β-oxidación: mitocondria',c:'green'},{t:'Síntesis AG: citosol',c:'rose'}
+    ],
+    secciones:[
+      {titulo:'Características generales', items:[
+        '🧈 <b>Definición:</b> sustancias hidrofóbicas (insolubles en agua, solubles en solventes orgánicos: éter, benceno, cloroformo). Formados por C, H, O; pueden contener N, P, S.',
+        '⚡ <b>Funciones:</b> energética (9 kcal/g — mayor que CHO y proteínas), reserva energética (TAGs tejido adiposo), estructural (membranas), hormonal (esteroides), protección (tejido adiposo), cofactores (vitaminas liposolubles A, D, E, K).',
+        '🔵 <b>Clasificación general:</b> (1) Saponificables: con ácidos grasos (lípidos neutros + complejos). (2) Insaponificables: sin AG (esteroides, terpenos).',
+      ]},
+      {titulo:'Ácidos grasos', items:[
+        '🔗 <b>Estructura:</b> ácidos monocarboxílicos. R-COOH. Cadena par de carbonos (14–22C), más abundantes 16–18C.',
+        '📊 <b>Saturados:</b> sin dobles enlaces, sólidos a temperatura ambiente, lineales, más rígidos. Ej: palmítico (16:0), esteárico (18:0).',
+        '💧 <b>Insaturados:</b> con dobles enlaces (cis predomina en biología — curva; trans — recta y más dañina). Líquidos a TA. Ej: oleico (18:1 Δ9 = 18:1 n-9).',
+        '⭐ <b>Esenciales (no sintetizados por humanos):</b> Ácido linoleico (18:2, ω-6) y Ácido α-linolénico (18:3, ω-3). Precursores de ácido araquidónico, EPA, DHA.',
+        '📝 <b>Nomenclatura:</b> IUPAC: ácido 18:1 Δ9 (desde COOH). Bioquímica: 18:1 n-9 o ω-9 (desde CH₃). Ejemplo: ácido linoleico = 18:2 Δ9,12 = 18:2 n-6,9.',
+        '🔬 <b>Propiedades químicas:</b> Esterificación (+ alcohol → éster + H₂O). Saponificación (hidrólisis alcalina → jabón = sal alcalina + alcohol → forman micelas).',
+      ]},
+      {titulo:'Clasificación de lípidos complejos', items:[
+        '🟡 <b>Triacilglicéridos (TAGs):</b> glicerol + 3 ácidos grasos. En C1 suele haber AG insaturado, en C2 AG saturado. Marcadores clínicos importantes.',
+        '🔵 <b>Fosfoglicéridos / Fosfolípidos:</b> glicerol + 2 AG + fosfato + cabeza polar. Anfipáticos (cabeza hidrofílica, colas hidrofóbicas). Componentes principales de membranas. Ácido fosfatídico es el precursor.',
+        '🟠 <b>Esfingolípidos:</b> esfingosina + AG. Mielina (vaina nerviosa). Glucolípidos (reconocimiento celular). Ceramida es el núcleo.',
+        '⚫ <b>Colesterol:</b> esteroide. Modula fluidez de membrana (evita rigidez a baja T° y fluidez excesiva a alta T°). Precursor de hormonas esteroideas, ácidos biliares, vitamina D.',
+        '🟢 <b>Eicosanoides:</b> derivados del ácido araquidónico (20C, ω-6). Prostaglandinas, tromboxanos, leucotrienos. Hormonas paracrinas. Se producen en el sitio de la lesión.',
+      ]},
+      {titulo:'Membrana plasmática', items:[
+        '🏗️ <b>Composición:</b> 40% lípidos (fosfolípidos + glucolípidos + colesterol), 10% proteínas (integrales/transmembrana/periféricas), 50% carbohidratos (glucocálix).',
+        '💫 <b>Movimientos de fosfolípidos (PREGUNTA EXAMEN):</b> Difusión lateral (intercambio posición en misma capa — frecuente). Rotación (giran en eje longitudinal). Flexión (colas se separan/acercan). Flip-flop (cambia de monocapa — muy poco frecuente).',
+        '🌡️ <b>Fluidez de membrana:</b> Temperatura alta → más fluida (fosfolípidos separados). Temperatura baja → más rígida. AG insaturados → más fluida. Colas hidrofóbicas largas → más rígida. Colesterol → modulador bidireccional.',
+        '🚪 <b>Transporte pasivo:</b> difusión simple (liposolubles, gases, O₂), difusión facilitada (proteínas canal), ósmosis. A favor del gradiente. Sin gasto de energía.',
+        '⚡ <b>Transporte activo:</b> contra el gradiente. Gasto de energía. Primario (ATP directamente — bomba Na⁺/K⁺). Secundario (simporte: misma dirección; antiporte: dirección opuesta). Vesicular (endocitosis — fagocitosis/pinocitosis; exocitosis).',
+      ]},
+      {titulo:'Digestión y metabolismo de lípidos', items:[
+        '👅 <b>Boca:</b> lipasa lingual (glándula von Ebner): acil-éster hidrolasa. Actúa en C3 del TAG. Ataca AG cadena corta (<12C). Forma 1,2-diacilglicérido. Emulsión lipídica gruesa.',
+        '🫁 <b>Estómago:</b> lipasa gástrica (isoenzima de lipasa lingual). Produce AG cadena corta → se absorben directamente ligados a albumina → hígado.',
+        '🔄 <b>Intestino — Fase intestinal:</b> Secretina (células S, duodeno) → HCO₃⁻ + H₂O. Sales biliares → emulsifican lípidos. Colecistoquinina → enzimas pancreáticas.',
+        '🧪 <b>Enzimas pancreáticas:</b> Lipasa pancreática + colipasa (colipasa se une a la gota de grasa → activa lipasa, quita AG en C1 y C3). Colesterol esterasa. Fosfolipasa.',
+        '🔵 <b>Micelas:</b> Primaria (componentes bilis + lípidos sin digerir). Secundaria (productos de digestión: colesterol libre + AG libres + 2-MAG + glicerol).',
+        '🔃 <b>Reesterificación en enterocito:</b> apoproteína B48 envuelve los lípidos → aparato de Golgi → ensambla quilomicrones → salen por exocitosis → circulación linfática (conducto torácico) → vena subclavia izquierda.',
+      ]},
+      {titulo:'Lipoproteínas y transporte lipídico', items:[
+        '🔵 <b>Quilomicrones (QM):</b> formados en enterocito. Los más grandes. Ricos en TAGs (85%). Transportan lípidos dietarios al músculo y tejido adiposo.',
+        '🟡 <b>VLDL:</b> formados en hígado. Ricos en TAGs (50%). Transportan lípidos hepáticos a tejidos periféricos.',
+        '🟠 <b>IDL → LDL:</b> productos de VLDL al perder TAGs. LDL ("colesterol malo"): rico en colesterol (37%); principal causa de aterosclerosis.',
+        '🟢 <b>HDL ("colesterol bueno"):</b> alta densidad (55% proteínas). Transporte reverso de colesterol (desde tejidos → hígado). LCAT esterifica el colesterol en HDL.',
+        '⚙️ <b>Lipoproteinlipasa (LPL):</b> enzima anclada al endotelio vascular. Hidroliza TAGs de QM y VLDL → AG libres + glicerol → tejidos. Activada por APO-CII, insulina. Inhibida por APO-CIII.',
+        '🧪 <b>PREGUNTA EXAMEN:</b> los QM y VLDL concentran relativo colesterol en circulación periférica porque la LPL elimina los TAGs → queda la misma cantidad de colesterol en menos lípido.',
+      ]},
+      {titulo:'β-oxidación y cuerpos cetónicos', items:[
+        '⚙️ <b>β-oxidación:</b> en mitocondria. Degrada AG → Acetil-CoA. Secuencia: deshidrogenación-hidratación-deshidrogenación-tiolisis (7 veces para palmítico → 8 Acetil-CoA).',
+        '🚪 <b>Entrada a mitocondria:</b> AG + CoA → Acil-CoA (en citoplasma). Transportador: carnitina aciltransferasa I y II + carnitina. PREGUNTA EXAMEN: síntesis AG en citosol; degradación en mitocondria.',
+        '⚡ <b>Rendimiento β-oxidación palmítico:</b> 7 FADH₂ (×1.5 ATP) + 7 NADH (×2.5 ATP) + 8 Acetil-CoA → Krebs → Total ~129 ATP.',
+        '🍋 <b>Cetogénesis (ayuno prolongado):</b> el hígado produce cuerpos cetónicos: acetoacetato, β-hidroxibutirato, acetona. Hidrosolubles. Utilizados por cerebro, corazón, músculo en ayuno. Cetoacidosis diabética: hiperglicemia >250 mg/dL + pH <7.30.',
+        '🧬 <b>Síntesis de ácidos grasos:</b> en citosol. Enzima acetil-CoA carboxilasa → malonil-CoA (3C). Sintasa de AG añade 2C por vuelta → palmitato (16C) en 7 vueltas. Regulada por insulina (activa) y glucagón (inhibe).',
+      ]},
+      {titulo:'Eicosanoides', items:[
+        '🔥 <b>Eicosanoides:</b> derivados del ácido araquidónico (20:4, ω-6, sintetizado a partir de ácido linoleico). Se liberan cuando la membrana celular es dañada (estímulo mecánico o químico — ej: exodoncia).',
+        '🔴 <b>COX-1 (constitutiva):</b> tromboxanos → vasoconstricción + agregación plaquetaria + protección mucosa gástrica. Los AINEs no selectivos la inhiben → necesario protector gástrico.',
+        '🟠 <b>COX-2 (inducible):</b> prostaglandinas → inflamación y dolor. Los inhibidores selectivos de COX-2 (celecoxib, meloxicam) NO afectan mucosa gástrica.',
+        '🟡 <b>5-Lipooxigenasa:</b> leucotrienos → quimiotaxis, inflamación, broncoconstricción.',
+        '💊 <b>AINEs no selectivos (inhiben COX-1 y COX-2):</b> aspirina, paracetamol, ketorolac, diclofenac, derivados del ácido propiónico. Requieren protector gástrico.',
+      ]}
+    ],
+    preguntas:[
+      {p:'¿Dónde ocurre la síntesis de ácidos grasos?',ops:['Mitocondria','Núcleo','Citosol','Lisosoma'],corr:2,exp:'PREGUNTA EXAMEN: síntesis de AG → citosol. β-oxidación (degradación) → mitocondria. El Acetil-CoA sale de la mitocondria como citrato.'},
+      {p:'Los quilomicrones se ensamblan en:',ops:['Hígado','Páncreas','Enterocito','Adipocito'],corr:2,exp:'Los quilomicrones se forman en el enterocito con apoproteína B48. Salen por exocitosis hacia la linfa → conducto torácico → vena subclavia.'},
+      {p:'¿Cuál es la función de la COX-2?',ops:['Proteger la mucosa gástrica','Producir tromboxanos','Inflamación y dolor (prostaglandinas)','Vasoconstricción'],corr:2,exp:'COX-2 es inducible → produce prostaglandinas inflamatorias. Los inhibidores selectivos (celecoxib) alivian el dolor sin afectar la mucosa.'},
+      {p:'¿Qué produce la β-oxidación del ácido palmítico (16C)?',ops:['7 Acetil-CoA','8 Acetil-CoA','16 Acetil-CoA','4 Acetil-CoA'],corr:1,exp:'7 vueltas de β-oxidación del palmítico → 8 Acetil-CoA + 7 FADH₂ + 7 NADH.'},
+      {p:'El colesterol en la membrana plasmática:',ops:['Solo la rigidiza','Solo la fluidiza','Modula la fluidez bidireccionalmente','No tiene función estructural'],corr:2,exp:'El colesterol es un modulador bidireccional: a alta T° limita la fluidez excesiva; a baja T° evita la rigidez cristalina.'},
+      {p:'Los cuerpos cetónicos son producidos por:',ops:['Músculo','Riñón','Hígado (mitocondria)','Tejido adiposo'],corr:2,exp:'En ayuno prolongado, el hígado produce acetoacetato, β-hidroxibutirato y acetona en la mitocondria.'},
+      {p:'PREGUNTA EXAMEN: ¿En qué posición del fosfolípido se ubican los AG?',ops:['C1 saturado; C2 insaturado','C1 insaturado; C2 saturado','Ambos saturados','Ambos insaturados'],corr:1,exp:'C1 → AG insaturado. C2 → AG saturado. El fosfato se une en C3 de la glicerina.'},
+      {p:'¿Qué activa a la lipoproteinlipasa (LPL)?',ops:['APO-CIII y glucagón','APO-CII e insulina','Colesterol LDL','Cortisol'],corr:1,exp:'LPL es activada por APO-CII e insulina (estado post-prandial). Inhibida por APO-CIII.'},
+    ]
+  },
+
+  /* ── 3. ENZIMAS ── */
+  {
+    id:'enzimas', icon:'⚡',
+    titulo:'Enzimas',
+    sub:'Estructura · Cinética · Inhibición · Regulación · Diagnóstico clínico',
+    badges:[
+      {t:'Ajuste inducido (Koshland 1958)',c:'cyan'},{t:'Km = afinidad',c:'gold'},
+      {t:'6 clases IUBMB',c:'green'},{t:'Sufijo: -asa',c:'rose'}
+    ],
+    secciones:[
+      {titulo:'Definición y características', items:[
+        '⚡ <b>Enzimas:</b> catalizadores biológicos macromoleculares. Aceleran reacciones sin consumirse. Reducen la energía de activación (ΔG‡). No alteran el equilibrio ni el ΔG total de la reacción.',
+        '🔬 <b>Tipos:</b> (1) Simples: solo aminoácidos. (2) Conjugadas: apoenzima (proteína) + cofactor (ion metálico o coenzima). Holoenzima = apoenzima + cofactor. (3) Ribozimas: RNA catalítico.',
+        '🎯 <b>Sitio activo:</b> región 3D específica donde se une el sustrato y ocurre la catálisis. Formado por aa estructurales, de fijación y catalíticos.',
+        '🔑 <b>Modelos de unión:</b> (1) Llave-cerradura (Fisher 1890) — DESMENTIDO. (2) Ajuste inducido (Koshland 1958) — VIGENTE: el sustrato es semicomplementario al sitio activo → induce cambio conformacional → complementario total.',
+        '🎯 <b>Especificidad:</b> Absoluta (un solo sustrato). Relativa (mismo tipo de enlace). Esteroespecífica (configuración específica L/D, cis/trans).',
+        '🌡️ <b>Factores que afectan actividad:</b> pH (óptimo diferente para cada enzima), temperatura (↑hasta ~40°C; >40°C → desnaturalización), [S], [E], cofactores, inhibidores.',
+      ]},
+      {titulo:'Clasificación IUBMB', items:[
+        '1️⃣ <b>Oxidorreductasas:</b> transferencia de electrones (reacciones redox). Oxidasas, peroxidasas, reductasas. Cofactores: NAD⁺, FAD.',
+        '2️⃣ <b>Transferasas:</b> transferencia de grupos funcionales (metilo, amino, fosfato). Transaminasas, transmetilasas, quinasas. Requieren PLP.',
+        '3️⃣ <b>Hidrolasas:</b> ruptura de enlaces con incorporación de H₂O. Esterasas, fosfatasas, peptidasas.',
+        '4️⃣ <b>Liasas:</b> adición a dobles enlaces o formación de dobles enlaces por eliminación. Descarboxilasas, sintasas (sin ATP).',
+        '5️⃣ <b>Isomerasas:</b> transferencia de grupos dentro de la misma molécula. Racemasas, epimerasas, mutasas.',
+        '6️⃣ <b>Ligasas:</b> formación de enlaces C-C, C-S, C-O, C-N usando ATP. Sintetasas, carboxilasas (añaden CO₂). USAN ATP.',
+      ]},
+      {titulo:'Cinética enzimática', items:[
+        '📊 <b>Velocidad de reacción:</b> número de moléculas de sustrato → producto por unidad de tiempo. V = k[S].',
+        '📈 <b>Michaelis-Menten:</b> v₀ = Vmax[S] / (Km + [S]). Grafica hiperbólica. Km = [S] a la mitad de Vmax.',
+        '🎯 <b>Significado de Km:</b> (1) Afinidad de la enzima por el sustrato (Km bajo = alta afinidad). (2) [S] a la que v = ½ Vmax.',
+        '🔬 <b>Lineweaver-Burk (doble recíproco):</b> representación inversa de M-M. Permite obtener Vmax exacta. SU VALOR SIEMPRE ES MAYOR que en M-M.',
+        '⚡ <b>Kcat (constante catalítica / número de recambio):</b> moléculas de sustrato transformadas por molécula de enzima por unidad de tiempo. Kcat alta = alta velocidad. Eficiencia = Kcat/Km.',
+        '🔴 <b>Enzimas alostéricas:</b> no obedecen M-M. Gráfica sigmoidal. Sitio alostérico ≠ sitio activo. Pueden ser multiméricas (cooperatividad) o monoméricas.',
+      ]},
+      {titulo:'Inhibición enzimática', items:[
+        '🔒 <b>Inhibición irreversible:</b> el inhibidor se une covalentemente (principalmente al sitio activo). Efecto permanente hasta que se sinteticen más enzimas. Ej: aspirina (COX), cianuro (citocromo oxidasa), penicilina.',
+        '🔵 <b>Inhibición competitiva:</b> el inhibidor (similar al sustrato) compite por el sitio activo. ↑Km, Vmax igual. En Lineweaver-Burk: rectas se cruzan en eje Y (misma Vmax). Ej: estatinas vs colesterol (HMG-CoA reductasa).',
+        '🟠 <b>Inhibición no competitiva:</b> inhibidor se une al sitio alostérico (no al activo). Puede unirse a E o ES. ↓Vmax, Km igual. En L-B: rectas se cruzan en eje X (misma Km).',
+        '🟡 <b>Inhibición acompetitiva:</b> inhibidor SOLO se une al complejo ES (no a la enzima libre). ↓Km Y ↓Vmax. En L-B: rectas paralelas.',
+      ]},
+      {titulo:'Regulación enzimática', items:[
+        '🏢 <b>Compartimentación:</b> reacciones opuestas en compartimentos diferentes (ej: síntesis AG en citosol, degradación en mitocondria).',
+        '🎭 <b>Isoenzimas:</b> catalizan la misma reacción en diferentes tejidos. Diferente secuencia de aa, diferente Km. Ej: LDH (5 isoenzimas), CK (3 isoenzimas → diagnóstico IAM), PK-L y PK-M.',
+        '⚖️ <b>Modulación alostérica:</b> modulador + → reduce Km (↑afinidad). Modulador – → aumenta Km (↓afinidad). Reversible. Rápida (segundos/minutos).',
+        '🔧 <b>Modificación covalente:</b> fosforilación (quinasa) / desfosforilación (fosfatasa). Regulación glucolítica: Insulina → desfosforila (activa). Glucagón → fosforila (inhibe).',
+        '😴 <b>Zimógenos (proenzimas):</b> formas inactivas que se activan por corte proteolítico. Ej: pepsinógeno → pepsina, quimotripsinógeno → quimotripsina, proinsulina → insulina.',
+        '🔢 <b>Regulación por transcripción:</b> lenta (horas/días). La insulina aumenta expresión de enzimas glucolíticas. El glucagón aumenta expresión de enzimas gluconeogénicas.',
+      ]}
+    ],
+    preguntas:[
+      {p:'¿Cuál inhibidor SOLO se une al complejo ES?',ops:['Competitivo','No competitivo','Acompetitivo','Irreversible'],corr:2,exp:'El inhibidor acompetitivo solo reconoce el complejo enzima-sustrato (ES), no a la enzima libre. Reduce tanto Km como Vmax.'},
+      {p:'Una enzima Ligasa:',ops:['Hidroliza un sustrato','Forma enlaces usando ATP','No requiere cofactores','Realiza reacciones redox'],corr:1,exp:'Ligasas forman enlaces C-C, C-S, C-O, C-N acoplados a hidrólisis de ATP. Ej: carboxilasas, sintetasas.'},
+      {p:'Km BAJO indica:',ops:['Baja afinidad por el sustrato','Alta afinidad por el sustrato','Alta Vmax','Inhibición competitiva'],corr:1,exp:'Km bajo = alta afinidad. La enzima alcanza v = ½ Vmax con poca [S]. GLUT1 (Km=1mM) tiene más afinidad que GLUT2 (Km=15-20mM).'},
+      {p:'El modelo de unión enzima-sustrato VIGENTE es:',ops:['Llave-cerradura (Fisher)','Ajuste inducido (Koshland)','Enlace covalente directo','No hay modelo aceptado'],corr:1,exp:'Ajuste inducido (Koshland, 1958): el sustrato es semicomplementario → induce cambio conformacional → complementariedad total. El de llave-cerradura fue desmentido.'},
+      {p:'En la inhibición NO competitiva:',ops:['↑Km, Vmax igual','↓Km y ↓Vmax','↓Vmax, Km igual','↑Vmax, Km igual'],corr:2,exp:'El inhibidor no competitivo se une al sitio alostérico y reduce la Vmax sin afectar la Km (afinidad intacta). En Lineweaver-Burk se cruzan en eje X.'},
+      {p:'¿Qué hace la glucagón sobre la glucógeno fosforilasa?',ops:['La desfosforila (inactiva)','La fosforila (activa)','No la regula','La inhibe alostéricamente'],corr:1,exp:'Glucagón → cascada AMPc → PKA → fosforila glucógeno fosforilasa → ACTIVA → glucogenólisis. Insulina hace lo opuesto (desfosforila → inactiva).'},
+      {p:'Las isoenzimas de la CK (Creatina Quinasa) tienen importancia diagnóstica en:',ops:['Diabetes mellitus','Cáncer de páncreas','Infarto agudo de miocardio','Cirrosis hepática'],corr:2,exp:'La isoenzima CK-MB se eleva específicamente en daño miocárdico. Es marcador de infarto agudo de miocardio.'},
+      {p:'¿Qué mecanismo de regulación enzimática es el MÁS RÁPIDO?',ops:['Transcripción génica','Zimógenos','Modificación covalente (fosforilación)','Modulación alostérica'],corr:3,exp:'La modulación alostérica actúa en segundos/minutos. La modificación covalente es minutos/horas. La transcripción génica es horas/días.'},
+    ]
+  },
+
+  /* ── 4. CICLO DE KREBS ── */
+  {
+    id:'krebs', icon:'🍋',
+    titulo:'Ciclo de Krebs',
+    sub:'Complejo piruvato deshidrogenasa · 8 reacciones · Balance energético · Regulación',
+    badges:[
+      {t:'Matriz mitocondrial',c:'cyan'},{t:'3 NADH + 1 FADH₂ + 1 GTP/vuelta',c:'gold'},
+      {t:'12 ATP/vuelta (clásico)',c:'green'},{t:'2 CO₂ por Acetil-CoA',c:'rose'}
+    ],
+    secciones:[
+      {titulo:'Complejo piruvato deshidrogenasa (PDH)', items:[
+        '🔄 <b>Conversión piruvato → Acetil-CoA:</b> ocurre en la matriz mitocondrial. NO ES PARTE del ciclo de Krebs. El piruvato entra a mitocondria por antiporte (entra piruvato, sale H⁺).',
+        '🧩 <b>Complejo PDH:</b> multienzimático (ahorra tiempo al unir sustratos). 3 enzimas: E1 (Piruvato descarboxilasa), E2 (Dihidrolipoil transacetilasa), E3 (Dihidrolipoil deshidrogenasa). Relación estequiométrica 30:60:6.',
+        '🔬 <b>5 cofactores PDH:</b> TPP (Pirofosfato de tiamina, de vitamina B1), FAD, NAD⁺, CoA-SH, Lipoamida.',
+        '⚖️ <b>Ecuación PDH:</b> Piruvato + CoA + NAD⁺ → Acetil-CoA + NADH + CO₂. Espontánea, exergónica, IRREVERSIBLE.',
+        '⚙️ <b>Regulación PDH:</b> PDH quinasa (ayuno → AMPc → fosforila E1 → INACTIVA). PDH fosfatasa (post-prandial → insulina → desfosforila → ACTIVA). Inhibida por: ATP, Acetil-CoA, NADH. Activada por: AMP, CoA-SH, NAD⁺.',
+      ]},
+      {titulo:'Las 8 reacciones del ciclo', items:[
+        '1️⃣ <b>Síntesis de citrato:</b> Acetil-CoA (2C) + Oxalacetato (4C) → Citrato (6C). Enzima: Citrato sintasa. Irreversible, espontánea. Condensación aldólica. Inhibida por: Succinil-CoA, ATP, NADPH, ácidos grasos cadena larga.',
+        '2️⃣ <b>Citrato → Isocitrato:</b> deshidratación + hidratación. Intermediario: cis-Aconitato. Enzima: Aconitasa. ΔG⁰ = +13.3 kJ/mol. ACONITASA = INHIBIDA POR FLÚOR (fluoroacetato → fluorocitrato → inhibe Aconitasa → bacteria muere → no caries).',
+        '3️⃣ <b>Descarboxilación oxidativa de Isocitrato:</b> Isocitrato → α-cetoglutarato + CO₂ + NADH. Enzima: Isocitrato deshidrogenasa. Inhibida por: NADH, ATP. Activada por: ADP, AMP, NAD⁺, Ca²⁺.',
+        '4️⃣ <b>α-cetoglutarato → Succinil-CoA:</b> + CO₂ + NADH. Enzima: complejo α-cetoglutarato deshidrogenasa (funciona igual que PDH). Inhibida por: NADH, ATP, GTP, Succinil-CoA. Activada por: ADP, AMP, Ca²⁺.',
+        '5️⃣ <b>Succinil-CoA → Succinato:</b> + GTP. Enzima: Succinil-CoA sintetasa / Tioquinasa. Fosforilación a nivel de sustrato. GTP → ATP (nucleósido difosfato quinasa).',
+        '6️⃣ <b>Succinato → Fumarato:</b> + FADH₂. Enzima: Succinato deshidrogenasa (= Complejo II de la fosforilación oxidativa, unida a membrana mitocondrial interna). Activada por: succinato, Pi, ATP, CoQ reducida. Inhibida por: oxalacetato y MALONATO.',
+        '7️⃣ <b>Fumarato → L-Malato:</b> + H₂O. Enzima: Fumarasa / Fumarato hidratasa. Inhibida por: ATP y su propio sustrato.',
+        '8️⃣ <b>Malato → Oxalacetato:</b> + NADH. Enzima: Malato deshidrogenasa. ΔG⁰ = +29.7 kJ/mol (desfavorable), pero el OAA es captado rápidamente por citrato sintasa → equilibrio desplazado.',
+      ]},
+      {titulo:'Balance energético y regulación', items:[
+        '📊 <b>Por cada vuelta del ciclo:</b> 3 NADH + 1 FADH₂ + 1 GTP + 2 CO₂. Balance (cálculo clásico): 9 ATP (NADH) + 2 ATP (FADH₂) + 1 GTP = 12 ATP/vuelta.',
+        '⚡ <b>Ecuación global:</b> Acetil-CoA + 3 NAD⁺ + FAD + GDP + Pi + 2H₂O → 2CO₂ + CoA-SH + 3NADH + FADH₂ + GTP + 3H⁺.',
+        '🔴 <b>Inhibición general:</b> TODAS las deshidrogenasas se inhiben cuando coenzimas reducidas (NADH, FADH₂) están en exceso. Se activan cuando están oxidadas (NAD⁺, FAD).',
+        '⚖️ <b>Regulación por carga energética:</b> ↑ATP → inhibe ciclo. ↑ADP/AMP → activa ciclo. Lo mismo rige para la fosforilación oxidativa.',
+        '🌿 <b>Reacciones anapleróticas:</b> reponen intermediarios del ciclo. Piruvato carboxilasa → OAA. Enzima málica → piruvato. Transaminaciones → OAA o α-cetoglutarato.',
+        '🔗 <b>El ciclo de Krebs es el CENTRO metabólico:</b> recibe Acetil-CoA de glucólisis, β-oxidación de AG y degradación de aminoácidos. Los intermediarios sirven para síntesis de aminoácidos, hemo, glucosa, etc.',
+      ]}
+    ],
+    preguntas:[
+      {p:'¿Cuántas vueltas del ciclo de Krebs por molécula de glucosa?',ops:['1','2','4','8'],corr:1,exp:'Una glucosa → 2 piruvatos → 2 Acetil-CoA → 2 vueltas del ciclo de Krebs.'},
+      {p:'La Succinato deshidrogenasa también es el:',ops:['Complejo I','Complejo II','Complejo III','Complejo V'],corr:1,exp:'La Succinato deshidrogenasa = Complejo II de la cadena respiratoria. Está unida a la membrana mitocondrial interna. Única que NO bombea protones.'},
+      {p:'El flúor afecta al ciclo de Krebs inhibiendo:',ops:['Citrato sintasa','Aconitasa (vía fluorocitrato)','Isocitrato deshidrogenasa','Malato deshidrogenasa'],corr:1,exp:'Fluoroacetato → fluorocitrato → inhibe Aconitasa → la bacteria no puede completar el ciclo → sin energía → muere. Base del efecto anti-caries del flúor.'},
+      {p:'¿Qué produce la reacción de Succinil-CoA sintetasa?',ops:['NADH','FADH₂','GTP','CO₂'],corr:2,exp:'Succinil-CoA → Succinato + CoA + GTP (fosforilación a nivel de sustrato). El GTP puede convertirse en ATP.'},
+      {p:'¿Cuál reacción del ciclo de Krebs es termodinámicamente desfavorable pero se lleva a cabo igualmente?',ops:['Citrato → Isocitrato','Succinato → Fumarato','Malato → Oxalacetato','α-ceto → Succinil-CoA'],corr:2,exp:'Malato → Oxalacetato tiene ΔG⁰ = +29.7 kJ/mol (desfavorable), pero el oxalacetato es captado inmediatamente por citrato sintasa, desplazando el equilibrio hacia la derecha.'},
+      {p:'El complejo piruvato deshidrogenasa se INACTIVA cuando:',ops:['Hay exceso de AMP','Hay insulina','Se fosforila (por PDH quinasa en ayuno)','Hay exceso de NAD⁺'],corr:2,exp:'PDH quinasa (activada en ayuno/glucagón) fosforila la subunidad E1 → complejo INACTIVO. La PDH fosfatasa (insulina) lo desfosforila → ACTIVO.'},
+      {p:'Los intermediarios del Ciclo de Krebs provienen de:',ops:['Solo glucólisis','Solo β-oxidación de AG','Glucólisis, β-oxidación de AG y aminoácidos','Solo aminoácidos'],corr:2,exp:'El Acetil-CoA que entra al ciclo proviene de glucólisis (piruvato), β-oxidación de ácidos grasos y degradación de aminoácidos cetogénicos.'},
+      {p:'¿Qué son las reacciones anapleróticas?',ops:['Producen Acetil-CoA desde glucosa','Reponen intermediarios del ciclo','Degradan aminoácidos','Sintetizan lípidos'],corr:1,exp:'Las reacciones anapleróticas reponen los intermediarios del ciclo que fueron desviados hacia rutas biosintéticas, manteniendo el ciclo activo.'},
+    ]
+  },
+
+  /* ── 5. FOSFORILACIÓN OXIDATIVA ── */
+  {
+    id:'foxid', icon:'🔥',
+    titulo:'Fosforilación Oxidativa',
+    sub:'Cadena respiratoria · 5 complejos · Teoría quimiosmótica · ATP sintasa',
+    badges:[
+      {t:'Membrana mitocondrial interna',c:'cyan'},{t:'1 NADH → 2.5 ATP',c:'gold'},
+      {t:'1 FADH₂ → 1.5 ATP',c:'green'},{t:'Aceptor final: O₂',c:'rose'}
+    ],
+    secciones:[
+      {titulo:'Conceptos clave', items:[
+        '⚡ <b>Potencial redox:</b> afinidad de una molécula por los electrones. Los complejos se organizan de menor a mayor potencial redox → el electrón fluye espontáneamente hacia el aceptor de mayor afinidad.',
+        '🔬 <b>Cadena transportadora de electrones (CTE):</b> serie de moléculas que transportan electrones secuencialmente de dadores a aceptores. Ubicada en la membrana mitocondrial interna (MMI).',
+        '🏗️ <b>Mitocondria:</b> Membrana externa (permeable). Membrana interna = MMI (IMPERMEABLE excepto para H⁺ por complejos). Espacio intermembrana (EIM). Matriz (enzimas de Krebs, β-oxidación, PDH, ADN mitocondrial).',
+        '🧬 <b>Componentes:</b> (1) Proteínas hierro-azufre (aceptan 1 e⁻ por vez, potencial redox bajo). (2) Citocromos a/b/c (hierro alternando Fe²⁺/Fe³⁺, aceptan 1 e⁻). (3) Coenzima Q / Ubiquinona (liposoluble, se mueve en la bicapa, acepta 2 e⁻; UQ→UQH•→UQH₂).',
+      ]},
+      {titulo:'Los 5 complejos', items:[
+        '🔵 <b>Complejo I — NADH deshidrogenasa:</b> acepta e⁻ del NADH (del ciclo de Krebs). Contiene FMN y proteínas FeS. Dona e⁻ a la CoQ. BOMBEA 4 H⁺ al EIM.',
+        '🟢 <b>Complejo II — Succinato deshidrogenasa:</b> acepta e⁻ del FADH₂ (succinato→fumarato). Contiene FAD y 3 proteínas FeS. Dona e⁻ a CoQ. NO BOMBEA PROTONES → por eso FADH₂ produce menos ATP que NADH.',
+        '🟡 <b>Complejo III — Citocromo bc1:</b> acepta e⁻ del UQH₂. Contiene cit-b, cit-c1 y proteína FeS de Rieske. Ciclo de la Ubiquinona. Dona e⁻ al citocromo C. BOMBEA 4 H⁺ al EIM.',
+        '🔴 <b>Complejo IV — Citocromo oxidasa (Cit a-a3):</b> acepta e⁻ del cit-C. Contiene cit-a, cit-a3 y centros de cobre (CuA y CuB). ENTREGA e⁻ AL O₂ (ACEPTOR FINAL) → forma H₂O. BOMBEA 2 H⁺ al EIM.',
+        '⚪ <b>Citocromo C:</b> proteína hidrofilica, unida débilmente al lado externo de la MMI. Transporta 1 e⁻ a la vez entre Complejo III y IV.',
+        '🏭 <b>Complejo V — ATP sintasa (FoF1):</b> Fo (dominio transmembrana — canal de H⁺). F1 (dominio periférico — sitio catalítico de ATP). Los H⁺ fluyen por Fo → cambio conformacional en F1 → fosforila ADP → ATP. Por cada 3 pares H⁺ → 1 ATP.',
+      ]},
+      {titulo:'Resumen y rendimiento', items:[
+        '📊 <b>¿Cuándo se bombean protones?</b> Complejo I ✅, Complejo II ❌ (no bombea), Complejo III ✅, Complejo IV ✅. Los protones acumulados en EIM forman gradiente electroquímico (fuerza protón-motriz).',
+        '💡 <b>Teoría quimiosmótica de Mitchell:</b> el gradiente de H⁺ en EIM es la fuerza que impulsa la síntesis de ATP. La MMI debe ser impermeable para mantener el gradiente.',
+        '📈 <b>Rendimiento:</b> 1 NADH → 2.5 ATP. 1 FADH₂ → 1.5 ATP. FADH₂ rinde menos porque el Complejo II no bombea H⁺.',
+        '⚠️ <b>PREGUNTA EXAMEN:</b> Si se inhibe el Complejo IV → electrones se acumulan → TODOS los complejos se reducen → el NADH se acumula (inhibe Krebs) → ciclo de Krebs se detiene → no hay ATP.',
+      ]},
+      {titulo:'Regulación e inhibidores', items:[
+        '🔴 <b>Inhibidores específicos:</b> Complejo I: Rotenona, Amital. Complejo II: Malonato, Carboxina. Complejo III: Mixotiazol, Antimicina A, Estigmatelina. Complejo IV: Cianuro (KCN), Monóxido de carbono (CO). APRÉNDASELOS PARA EL EXAMEN.',
+        '⚡ <b>Desacoplantes:</b> sustancias que crean poros en la MMI → el gradiente de H⁺ se disipa → calor sin síntesis de ATP → O₂ sigue consumiéndose. Ejemplo: 2,4-dinitrofenol.',
+        '🌡️ <b>Termogenina (UCP1):</b> proteína desacoplante natural de 33 kDa. Constituyente del 10% de proteínas de la MMI del tejido adiposo marrón (recién nacidos). Cuando se activa, disipa el gradiente → genera calor.',
+        '💊 <b>Inhibidores de ATP sintasa:</b> Oligomicina: inhibe Fo → no entran H⁺ → gradiente se acumula → inhibe CTE → menos O₂ consumido → no ATP. Diferente del desacoplante (desacoplante ↑O₂; oligomicina ↓O₂).',
+      ]}
+    ],
+    preguntas:[
+      {p:'¿Cuál es el aceptor FINAL de electrones en la fosforilación oxidativa?',ops:['NAD⁺','CoQ','Citocromo C','O₂ (forma H₂O)'],corr:3,exp:'El O₂ es el aceptor final en el Complejo IV. 4 e⁻ + 4 H⁺ + O₂ → 2 H₂O. Sin O₂ → cadena bloqueada.'},
+      {p:'¿Por qué FADH₂ produce MENOS ATP que NADH?',ops:['Es menos abundante','El Complejo II no bombea H⁺','El Complejo II está inactivo','FADH₂ no entra a la CTE'],corr:1,exp:'El FADH₂ entrega sus e⁻ en el Complejo II, que NO bombea H⁺ al EIM → menos gradiente → menos ATP (1.5 ATP vs 2.5 de NADH).'},
+      {p:'El inhibidor del Complejo IV es:',ops:['Rotenona','Malonato','Oligomicina','Cianuro (KCN)'],corr:3,exp:'Cianuro y CO inhiben el Complejo IV (citocromo a-a3). Rotenona = Complejo I. Malonato = Complejo II.'},
+      {p:'¿Qué hace un desacoplante (ej. 2,4-dinitrofenol)?',ops:['Inhibe el Complejo IV','Crea poros en la MMI → disipa gradiente de H⁺ → calor sin ATP','Bloquea la ATP sintasa','Inhibe el ciclo de Krebs'],corr:1,exp:'Un desacoplante forma un poro en la MMI → H⁺ fluyen hacia la matriz sin pasar por la ATP sintasa → gradiente se pierde → energía se libera como calor. ↑O₂, ↓ATP.'},
+      {p:'La Termogenina (UCP1) se encuentra en:',ops:['Tejido adiposo blanco','Músculo esquelético','Tejido adiposo marrón (especialmente en recién nacidos)','Hígado'],corr:2,exp:'La termogenina es el desacoplante fisiológico del tejido adiposo pardo/marrón. Importante en recién nacidos para producir calor sin tiritar.'},
+      {p:'El Complejo V (ATP sintasa):',ops:['Bombea H⁺ al EIM','Transfiere e⁻ al O₂','Usa el flujo de H⁺ para sintetizar ATP','Acepta e⁻ del NADH'],corr:2,exp:'La ATP sintasa usa la energía del flujo de H⁺ (desde EIM hacia la matriz, a favor del gradiente) para fosforilar ADP→ATP. 3 pares H⁺ por ATP.'},
+      {p:'Si se administra oligomicina, ¿qué ocurre?',ops:['↑O₂, ↓ATP','↓O₂, ↓ATP','↑O₂, ↑ATP','No cambia nada'],corr:1,exp:'Oligomicina bloquea el canal Fo → H⁺ no entran → gradiente se acumula → inhibe la CTE → ↓consumo de O₂ Y ↓síntesis de ATP. Diferente del desacoplante.'},
+      {p:'¿Qué pasa con el ciclo de Krebs si se bloquea el Complejo IV?',ops:['Se acelera para compensar','El NADH se acumula → inhibe deshidrogenasas → ciclo se detiene','No se afecta','Aumenta la producción de Acetil-CoA'],corr:1,exp:'Sin Complejo IV los e⁻ no fluyen → todos los complejos se reducen → NADH se acumula → inhibe alostéricamente las deshidrogenasas del Krebs → ciclo se detiene.'},
+    ]
+  },
+
+  /* ── 6. CUESTIONARIO ── */
+  {
+    id:'cuestionario', icon:'📝',
+    titulo:'Cuestionario de Reforzamiento',
+    sub:'Integración metabólica · Preguntas tipo examen · Conceptos clave',
+    badges:[
+      {t:'Preguntas integradoras',c:'gold'},{t:'Tipo examen',c:'rose'},
+      {t:'Metabolismo integrado',c:'cyan'},{t:'Odontología',c:'green'}
+    ],
+    secciones:[
+      {titulo:'Conceptos integradores clave', items:[
+        '🔗 <b>Integración carbohidratos-lípidos:</b> Glucosa → glucólisis → piruvato → Acetil-CoA → ciclo de Krebs se satura → citrato sale al citosol → citrato liasa → Acetil-CoA citosólico → síntesis de ácidos grasos. POR ESO ENGORDAMOS CON EXCESO DE CARBOHIDRATOS.',
+        '🏥 <b>Importancia clínica de enzimas en diagnóstico:</b> enzimas plasma-específicas vs no específicas. CK-MB (infarto miocardio). LDH (daño tisular). Transaminasas AST/ALT (daño hepático). ALT más específico de hígado.',
+        '🔵 <b>Papel de los polisacáridos en biopelícula dental:</b> Glucano (glucosiltransferasa bacteriana + glucosa de sacarosa → adhesión al esmalte). Fructano (reserva de energía bacteriana → degradado → ácidos → desmineralización).',
+        '⚗️ <b>Colágeno:</b> proteína fibrosa. Síntesis: hidroxilación de prolina y lisina (requiere vitamina C). Estructura terciaria en triple hélice. Presente en ligamento periodontal, dentina, hueso alveolar.',
+        '🔬 <b>Hemoglobina y efecto Bohr:</b> en tejidos periféricos, ↑CO₂, ↑H⁺, ↑temperatura → curva de disociación a la DERECHA → hemoglobina pierde afinidad por O₂ → libera O₂ a los tejidos.',
+        '🧬 <b>Ácidos nucleicos — diferencias ADN/ARN:</b> ADN: desoxirribosa, timina, doble hélice, más estable, en núcleo, lineal (eucariotas)/circular (procariotas). ARN: ribosa, uracilo, monocatenario, menos estable.',
+      ]},
+      {titulo:'Conceptos odontológicos críticos', items:[
+        '🦷 <b>Ácido hialurónico y periodonto:</b> el más abundante en la matriz extracelular del tejido periodontal. Participa en reparación tisular y cicatrización. Asociado a la matriz colágena del ligamento periodontal. Bacterias periodontales (Porphyromonas gingivalis) liberan hialuronidasa → destruye ácido hialurónico → facilita invasión tisular.',
+        '💊 <b>Flúor y metabolismo bacteriano:</b> (1) Inhibe enolasa → bloquea glucólisis bacteriana → bacteria sin ATP. (2) Fluoroacetato → fluorocitrato → inhibe aconitasa → bloquea ciclo de Krebs bacteriano. Doble mecanismo anticariogénico.',
+        '🧪 <b>Sacarosa y caries:</b> glucosiltransferasa usa glucosa de sacarosa → glucanos (adhesión). Fructosiltransferasa usa fructosa → fructanos (reserva energética → ácidos → desmineralización esmalte). La sacarosa es la más cariogénica por este doble efecto.',
+        '🔬 <b>Condroitín sulfato y dentina:</b> la dentina (estructura más dura del cuerpo humano) contiene condroitín sulfato en su matriz orgánica. Fundamental para la mineralización dentinaria.',
+      ]}
+    ],
+    preguntas:[
+      {p:'¿Por qué engordamos con exceso de carbohidratos?',ops:['Glucosa se almacena directamente','El exceso de Acetil-CoA se dirige a síntesis de AG','La glucosa inhibe la lipolisis','El glucagón activa la lipogénesis'],corr:1,exp:'Glucosa → glucólisis → Acetil-CoA → ciclo Krebs saturado → citrato sale → citrato liasa → Acetil-CoA citosólico → síntesis de ácidos grasos → TAGs → tejido adiposo.'},
+      {p:'¿Qué enzima de la glucólisis bacteriana inhibe el flúor?',ops:['Hexoquinasa','PFK-1','Enolasa','Piruvato quinasa'],corr:2,exp:'El flúor inhibe la enolasa bacteriana (2-fosfoglicerato → PEP). Sin PEP no hay piruvato → sin ATP → bacteria muere → no produce ácidos → no hay caries.'},
+      {p:'¿Qué aminoácido de la hemoglobina participa en la amortiguación del pH?',ops:['Glutamato','Histidina (grupo imidazólico)','Lisina','Glicina'],corr:1,exp:'Los grupos imidazólicos de la histidina en la hemoglobina pueden aceptar o ceder protones (H⁺) → participan en la regulación del pH sanguíneo.'},
+      {p:'El ciclo de la urea se conecta al ciclo de Krebs a través de:',ops:['Oxalacetato','α-cetoglutarato','Fumarato','Succinil-CoA'],corr:2,exp:'En el ciclo de la urea, la arginosuccinasa produce arginina + fumarato. Este fumarato entra al ciclo de Krebs → malato → oxalacetato. Conexión nitrógeno-energía.'},
+      {p:'¿Cuál lipoproteína realiza el transporte REVERSO del colesterol?',ops:['Quilomicrón','VLDL','LDL','HDL'],corr:3,exp:'HDL = "colesterol bueno". Recoge colesterol de tejidos periféricos → lo lleva al hígado (transporte reverso). La LCAT esterifica el colesterol en HDL.'},
+      {p:'La amilasa salival rompe enlaces:',ops:['β-1,4','α-1,6','α-1,4','β-1,6'],corr:2,exp:'La α-amilasa salival (y pancreática) rompe exclusivamente los enlaces α-1,4 del almidón y glucógeno. Los enlaces α-1,6 (ramificaciones) son cortados por α-dextrinasa.'},
+      {p:'¿Qué diferencia ADN de ARN en su estructura?',ops:['ADN tiene uracilo; ARN tiene timina','ADN tiene desoxirribosa; ARN tiene ribosa','ARN es doble hélice; ADN es monocatenario','No hay diferencias estructurales'],corr:1,exp:'ADN: desoxirribosa (C2 sin OH), base timina (T), doble hélice, más estable. ARN: ribosa (C2 con OH), base uracilo (U), generalmente monocatenario.'},
+      {p:'La Porphyromonas gingivalis produce hialuronidasa. ¿Cuál es su efecto periodontal?',ops:['Protege el ligamento periodontal','Despolimeriza ácido hialurónico → facilita invasión bacteriana','Mineraliza el cemento','Inhibe la inflamación'],corr:1,exp:'La hialuronidasa destruye el ácido hialurónico de la matriz extracelular periodontal → favorece la difusión microbiana → daño tisular periodontal.'},
+    ]
+  }
+];
+
+/* ════════════════════════════════
+   STATE
+════════════════════════════════ */
+let currentGuia = null;
+let synth = window.speechSynthesis;
+let quizAnswers = {};
+let quizDone = false;
+let expandLoading = false;
+
+/* ════════════════════════════════
+   INIT TABS
+════════════════════════════════ */
+const tabBar = document.getElementById('tabBar');
+GUIAS.forEach((g,i)=>{
+  const btn = document.createElement('button');
+  btn.className = 'tab-btn';
+  btn.textContent = g.icon + ' ' + g.titulo;
+  btn.onclick = ()=> loadGuia(i);
+  tabBar.appendChild(btn);
+});
+
+/* ════════════════════════════════
+   LOAD GUIDE
+════════════════════════════════ */
+function loadGuia(idx){
+  currentGuia = idx;
+  quizAnswers = {};
+  quizDone = false;
+
+  // update tabs
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active', i===idx);
+  });
+
+  const g = GUIAS[idx];
+  document.getElementById('welcomeScreen').style.display = 'none';
+  const mc = document.getElementById('mainContent');
+  mc.style.display = 'block';
+
+  let html = `
+    <div class="guide-header">
+      <div class="guide-icon">${g.icon}</div>
+      <div>
+        <div class="guide-title">${g.titulo}</div>
+        <div class="guide-sub">${g.sub}</div>
+      </div>
+    </div>
+    <div class="badge-row">${g.badges.map(b=>`<span class="badge ${b.c}">${b.t}</span>`).join('')}</div>
+  `;
+
+  g.secciones.forEach(sec=>{
+    html += `<div class="sec-head">${sec.titulo}</div><div class="content-grid">`;
+    sec.items.forEach((item,ii)=>{
+      html += `<div class="c-card" onclick="speakCard(this)" data-text="${item.replace(/<[^>]+>/g,'').replace(/"/g,'&quot;')}">${item}<span class="speak-icon">🔊</span></div>`;
+    });
+    html += `</div>`;
+  });
+
+  // AI expand placeholder
+  html += `<div id="aiExpandBox"></div>`;
+
+  // QUIZ
+  html += `<div class="quiz-section"><div class="quiz-title">📋 Autoevaluación — ${g.titulo}</div>`;
+  g.preguntas.forEach((q,qi)=>{
+    html += `<div class="q-card" id="qcard-${qi}">
+      <div class="q-num">Pregunta ${qi+1} de ${g.preguntas.length}</div>
+      <div class="q-text">${q.p}</div>
+      <div class="opts">`;
+    q.ops.forEach((op,oi)=>{
+      html += `<button class="opt" onclick="answerQ(${qi},${oi})">${String.fromCharCode(65+oi)}. ${op}</button>`;
+    });
+    html += `</div><div class="feedback" id="fb-${qi}" style="display:none"></div></div>`;
+  });
+  html += `<div id="scoreBox"></div></div>`;
+
+  mc.innerHTML = html;
+  const col = document.getElementById('contentCol');
+  col.scrollTop = 0;
+
+  setBubble(`📖 ${g.titulo} — ${g.secciones.length} secciones. Haz clic en cualquier tarjeta para escucharla, o usa los botones.`);
+}
+
+/* ════════════════════════════════
+   QUIZ LOGIC
+════════════════════════════════ */
+function answerQ(qi, oi){
+  if(quizAnswers[qi] !== undefined) return; // ya respondida
+  const g = GUIAS[currentGuia];
+  const q = g.preguntas[qi];
+  quizAnswers[qi] = oi;
+
+  const card = document.getElementById('qcard-'+qi);
+  const opts = card.querySelectorAll('.opt');
+  opts.forEach((opt,i)=>{
+    opt.disabled = true;
+    if(i === q.corr) opt.classList.add('correct');
+    else if(i === oi && oi !== q.corr) opt.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('fb-'+qi);
+  fb.style.display = 'block';
+  fb.innerHTML = (oi === q.corr ? '✅ ' : '❌ ') + q.exp;
+
+  // check if all answered
+  if(Object.keys(quizAnswers).length === g.preguntas.length){
+    showScore();
+  }
+}
+
+function showScore(){
+  const g = GUIAS[currentGuia];
+  const correct = Object.entries(quizAnswers).filter(([qi,oi])=> parseInt(oi) === g.preguntas[qi].corr).length;
+  const total = g.preguntas.length;
+  const pct = Math.round(correct/total*100);
+  const emoji = pct >= 80 ? '🏆' : pct >= 60 ? '👍' : '📚';
+  const msg = pct >= 80 ? '¡Excelente, Joe! Dominas el tema.' : pct >= 60 ? 'Buen trabajo, repasa los errores.' : 'Sigue estudiando, puedes mejorar.';
+
+  document.getElementById('scoreBox').innerHTML = `
+    <div class="score-box">
+      <div style="font-size:2.5rem">${emoji}</div>
+      <div class="score-big">${correct}/${total}</div>
+      <div class="score-label">${pct}% — ${msg}</div>
+      <button class="retry-btn" onclick="retryQuiz()">🔄 Reintentar</button>
+    </div>`;
+  setBubble(`${emoji} ${correct} de ${total} correctas (${pct}%). ${msg}`);
+}
+
+function retryQuiz(){
+  loadGuia(currentGuia);
+}
+
+/* ════════════════════════════════
+   SPEECH
+════════════════════════════════ */
+function speakCard(el){
+  if(!synth) return;
+  synth.cancel();
+  const text = el.dataset.text;
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'es-ES';utt.rate = 0.95;utt.pitch = 1;
+  synth.speak(utt);
+  setBubble('🔊 Leyendo: ' + text.substring(0,60) + '…');
+}
+
+function setBubble(txt){
+  document.getElementById('bubble').textContent = txt;
+}
+
+/* ════════════════════════════════
+   BUTTONS
+════════════════════════════════ */
+document.getElementById('btnLeer').onclick = ()=>{
+  if(currentGuia === null) return;
+  const g = GUIAS[currentGuia];
+  const allText = g.secciones.flatMap(s=>s.items).map(i=>i.replace(/<[^>]+>/g,'')).join('. ');
+  synth.cancel();
+  const utt = new SpeechSynthesisUtterance(allText.substring(0,3000));
+  utt.lang='es-ES';utt.rate=0.92;utt.pitch=1;
+  synth.speak(utt);
+  setBubble('🔊 Leyendo el tema completo…');
+};
+
+document.getElementById('btnDetener').onclick = ()=>{
+  synth.cancel();
+  setBubble('⏹ Lectura detenida.');
+};
+
+document.getElementById('btnAmpliar').onclick = async ()=>{
+  if(currentGuia === null || expandLoading) return;
+  const g = GUIAS[currentGuia];
+  const box = document.getElementById('aiExpandBox');
+  if(!box) return;
+  expandLoading = true;
+  setBubble('🤖 Generando explicación ampliada con IA…');
+
+  box.innerHTML = `<div class="ai-box"><div class="ai-box-title">🤖 Prof. Jorge Ñañez — Ampliación con IA</div><div class="loading-row"><div class="ld"></div><div class="ld"></div><div class="ld"></div></div></div>`;
+
+  try {
+    const prompt = `Eres el Prof. Jorge Ñañez, tutor de bioquímica para estudiantes de odontología de primer año. 
+Amplía con ejemplos clínicos odontológicos relevantes el tema: "${g.titulo}".
+Incluye: conexiones con la práctica dental, errores comunes de los estudiantes, y 3 perlas de memoria (mnemotecnias o analogías).
+Responde en español, en 4–6 párrafos concisos y didácticos. Usa emojis para hacer el texto más visual.`;
+
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || 'No se pudo obtener respuesta.';
+    box.innerHTML = `<div class="ai-box"><div class="ai-box-title">🤖 Prof. Jorge Ñañez — Ampliación IA</div><p style="white-space:pre-wrap;line-height:1.7;font-size:.87rem">${text}</p></div>`;
+    setBubble('✅ Ampliación completada. ¡Toma notas!');
+  } catch(e){
+    box.innerHTML = `<div class="ai-box"><div class="ai-box-title">⚠️ Error</div><p>No se pudo conectar con la IA. Verifica tu conexión.</p></div>`;
+    setBubble('❌ Error al conectar con la IA.');
+  }
+  expandLoading = false;
+};
+</script>
+</body>
+</html>
